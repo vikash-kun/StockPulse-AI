@@ -1,0 +1,33 @@
+project:
+  name: StockPulse AI
+  version: 0.1.0
+  environment: development
+
+data:
+  ticker: RELIANCE.NS
+  start_date: "2018-01-01"
+  end_date: null
+  interval: "1d"
+  raw_file: "data/raw/stock_data.csv"
+  processed_file: "data/processed/stock_features.csv"
+
+features:
+  moving_average_windows:
+    - 5
+    - 10
+    - 20
+
+  return_windows:
+    - 1
+    - 5
+
+  volatility_window: 10
+
+model:
+  task: binary_classification
+  target: next_day_direction
+  random_state: 42
+
+evaluation:
+  test_size: 0.2
+  split_method: chronological
