@@ -22,7 +22,7 @@ data/processed/*
 !data/processed/.gitkeep
 
 # Trained models
-models/
+/models/
 *.pkl
 *.joblib
 
