@@ -39,7 +39,6 @@ FEATURE_COLUMNS = [
 
 TARGET_COLUMN = "Target"
 
-
 def load_data():
     """Load engineered stock data."""
 
@@ -50,14 +49,23 @@ def load_data():
 
     df = pd.read_csv(INPUT_FILE)
 
-    print("\nDEBUG: CSV columns:")
-    print(df.columns.tolist())
+    # Remove leading and trailing spaces from column names
+    df.columns = df.columns.str.strip()
 
-    print("\nDEBUG: First five rows:")
-    print(df.head())
+    # Convert Date column
+    if "Date" not in df.columns:
+        raise ValueError(
+            f"Date column not found. Available columns: {df.columns.tolist()}"
+        )
+
+    df["Date"] = pd.to_datetime(df["Date"])
+
+    # Sort data chronologically
+    df = df.sort_values("Date").reset_index(drop=True)
+
+    print("\nCSV columns cleaned successfully.")
 
     return df
-
 
 def prepare_datasets(df):
     """Separate features and target, then split chronologically."""

@@ -13,9 +13,8 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "processed"
 
 OUTPUT_FILE = OUTPUT_DIR / "RELIANCE_NS_features.csv"
 
-
 def load_data():
-    """Load cleaned historical stock data."""
+    """Load engineered historical stock data."""
 
     if not INPUT_FILE.exists():
         raise FileNotFoundError(
@@ -24,12 +23,16 @@ def load_data():
 
     df = pd.read_csv(INPUT_FILE)
 
+    # Remove whitespace from column names FIRST
+    df.columns = df.columns.str.strip()
+
+    # Convert Date column
     df["Date"] = pd.to_datetime(df["Date"])
 
+    # Sort chronologically
     df = df.sort_values("Date").reset_index(drop=True)
 
     return df
-
 
 def create_features(df):
     """Create technical and statistical features."""
